@@ -3,9 +3,11 @@ package core
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc"
 	"os/exec"
 	"strings"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type WorkerNode struct {
@@ -15,7 +17,7 @@ type WorkerNode struct {
 
 func (n *WorkerNode) Init() (err error) {
 	// connect to master node
-	n.conn, err = grpc.Dial("localhost:50051", grpc.WithInsecure())
+	n.conn, err = grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return err
 	}
